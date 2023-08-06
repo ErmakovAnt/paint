@@ -1,0 +1,10 @@
+.settingbar {
+  display: flex;
+  height: 40px;
+  width: 1050px;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20px;
+  box-shadow: -18px 20px 0 -18px #eee, 18px -20px 0 -18px #eee,
+    20px 20px 0 -20px black, 0 0 0 2px black;
+}
