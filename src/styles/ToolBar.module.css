@@ -28,3 +28,14 @@
   width: 25px;
   height: 25px;
 }
+
+.svg {
+  transition: 0.2s;
+}
+.svg:hover {
+  fill: #969494;
+  cursor: pointer;
+}
+.activeSvg {
+  fill: #969494;
+}
