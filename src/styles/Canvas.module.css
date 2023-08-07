@@ -3,3 +3,8 @@
   height: 580px;
   border: 2px solid black;
 }
+.canvasWrapper {
+  display: flex;
+  margin-top: 10px;
+  gap: 10px;
+}

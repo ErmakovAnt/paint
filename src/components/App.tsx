@@ -5,7 +5,7 @@ function App() {
   return (
     <div className={style.App}>
       <SettingBar />
-      <Canvas />
+      <Canvas height={577} width={998} />
     </div>
   );
 }
