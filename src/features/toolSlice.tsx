@@ -2,10 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface toolState {
-  tool: null | string;
+  tool: string;
 }
 const initialState: toolState = {
-  tool: null,
+  tool: "pencil",
 };
 
 export const toolSlice = createSlice({

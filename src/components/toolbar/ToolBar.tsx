@@ -1,28 +1,32 @@
 import style from "../../styles/ToolBar.module.css";
 import SvgSelector from "../svgselector/SvgSelector";
 
-import { tools, functions } from "../../utils/toolNames";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { tools as toolNames, functions } from "../../utils/toolNames";
 import { setTool } from "../../features/toolSlice";
+import { tools } from "../../tools/tools";
+import { useAppDispatch, useAppSelector } from "../../features/hook";
 
-const Toolbar = () => {
-  const [activeIcon, setActiveIcon] = useState<string>("brush");
-  const dispatch = useDispatch();
+interface toolBarProps {
+  canvas: HTMLCanvasElement | null;
+}
+
+const Toolbar = ({ canvas }: toolBarProps) => {
+  const dispatch = useAppDispatch();
+  const activeTool = useAppSelector((state) => state.tool.tool);
 
   return (
     <div className={style.toolbar}>
       <div className={style.toolbar_top}>
-        {tools.map((item) => (
+        {toolNames.map((item) => (
           <div
-            className={activeIcon === item ? style.activeSvg : style.svg}
+            className={activeTool === item ? style.activeSvg : style.svg}
             key={item}
             onClick={() => {
               dispatch(setTool(item));
-              setActiveIcon(item);
+              tools(item, canvas);
             }}
           >
-            <SvgSelector id={item} />
+            <SvgSelector tool={item} />
           </div>
         ))}
       </div>
@@ -32,11 +36,11 @@ const Toolbar = () => {
             key={item}
             onClick={() => {
               dispatch(setTool(item));
-              setActiveIcon(item);
+              tools(item, canvas);
             }}
-            className={activeIcon === item ? style.activeSvg : style.svg}
+            className={activeTool === item ? style.activeSvg : style.svg}
           >
-            <SvgSelector id={item} />
+            <SvgSelector tool={item} />
           </div>
         ))}
       </div>

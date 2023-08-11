@@ -1,13 +1,9 @@
-export function brush(
+export function pencil(
   canvas: HTMLCanvasElement | null,
   ctx: CanvasRenderingContext2D | null | undefined
 ) {
   let mouseDown: boolean;
-  if (canvas || canvas) {
-    canvas.onmousedown = null;
-    canvas.onmousemove = null;
-    canvas.onmouseup = null;
-  }
+
   function listen() {
     if (canvas) {
       canvas.onmousemove = mouseMoveHandler;
@@ -33,8 +29,7 @@ export function brush(
   }
 
   function draw(x: number, y: number) {
-    ctx?.fillRect(x - 6, y - 6, 10, 10);
+    ctx?.lineTo(x, y);
     ctx?.stroke();
-    console.log("brush");
   }
 }

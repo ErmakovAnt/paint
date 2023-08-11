@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
 
 import style from "../../styles/Canvas.module.css";
 import Toolbar from "../toolbar/ToolBar";
 import { setCanvas } from "../../features/canvasSlice";
 import { tools } from "../../tools/tools";
+import { useAppDispatch, useAppSelector } from "../../features/hook";
 
 interface CanvasProps {
   width: number;
@@ -12,17 +12,17 @@ interface CanvasProps {
 }
 const Canvas = ({ width, height }: CanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const { tool } = useAppSelector((state) => state.tool);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    dispatch(setCanvas(canvasRef.current));
-    tools("brush", canvas);
-  }, [dispatch]);
+    // dispatch(setCanvas(canvasRef.current));
+    tools(tool, canvasRef.current);
+  }, [tools, tool]);
 
   return (
     <div className={style.canvasWrapper}>
-      <Toolbar />
+      <Toolbar canvas={canvasRef.current} />
       <div className={style.canvas}>
         <canvas ref={canvasRef} width={width} height={height}></canvas>
       </div>
