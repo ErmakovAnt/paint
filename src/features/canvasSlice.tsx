@@ -1,13 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+  canvas: null,
+};
 const canvasSlice = createSlice({
   name: "canvas",
-  initialState: {
-    canvas: null,
-  },
+  initialState,
   reducers: {
-    setCanvas(state, { payload }) {
-      state.canvas = payload;
+    setCanvas(state, action) {
+      state.canvas = action.payload;
     },
   },
 });

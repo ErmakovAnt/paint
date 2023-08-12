@@ -1,5 +1,5 @@
 export function pencil(
-  canvas: HTMLCanvasElement | null,
+  canvas: HTMLCanvasElement | null | undefined,
   ctx: CanvasRenderingContext2D | null | undefined
 ) {
   let mouseDown: boolean;
@@ -16,9 +16,10 @@ export function pencil(
     mouseDown = false;
   }
   function mouseDownHandler(e: MouseEvent) {
-    if (canvas) {
+    if (canvas && ctx) {
       ctx?.beginPath();
       ctx?.moveTo(e.offsetX, e.offsetY);
+      ctx.lineWidth = 1;
     }
     mouseDown = true;
   }

@@ -16,9 +16,9 @@ const Canvas = ({ width, height }: CanvasProps) => {
   const { tool } = useAppSelector((state) => state.tool);
 
   useEffect(() => {
-    // dispatch(setCanvas(canvasRef.current));
+    dispatch(setCanvas(canvasRef.current));
     tools(tool, canvasRef.current);
-  }, [tools, tool]);
+  }, [tool]);
 
   return (
     <div className={style.canvasWrapper}>

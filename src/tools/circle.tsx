@@ -1,5 +1,5 @@
 export function cirlce(
-  canvas: HTMLCanvasElement | null,
+  canvas: HTMLCanvasElement | null | undefined,
   ctx: CanvasRenderingContext2D | null | undefined
 ) {
   let mouseDown: boolean;

@@ -8,3 +8,7 @@
   box-shadow: -18px 20px 0 -18px #eee, 18px -20px 0 -18px #eee,
     20px 20px 0 -20px black, 0 0 0 2px black;
 }
+
+.label {
+  margin: 0 10px;
+}

@@ -1,5 +1,5 @@
 export function brush(
-  canvas: HTMLCanvasElement | null,
+  canvas: HTMLCanvasElement | null | undefined,
   ctx: CanvasRenderingContext2D | null | undefined
 ) {
   let mouseDown: boolean;
@@ -33,7 +33,7 @@ export function brush(
   }
 
   function draw(x: number, y: number) {
-    ctx?.fillRect(x - 6, y - 6, 10, 10);
+    ctx?.lineTo(x - 6, y - 6);
     ctx?.stroke();
   }
 }

@@ -5,13 +5,19 @@ import { line } from "./line";
 import { pencil } from "./pencil";
 import { rect } from "./rect";
 
-export function tools(tool: string | null, canvas: HTMLCanvasElement | null) {
+export function tools(
+  tool: string | null,
+  canvas: HTMLCanvasElement | null,
+  fillColor?: string,
+  strokeColor?: string,
+  lineWidth?: number
+) {
   let ctx = canvas?.getContext("2d");
 
-  if (canvas) {
-    canvas.onmousedown = null;
-    canvas.onmousemove = null;
-    canvas.onmouseup = null;
+  if (canvas && ctx && (fillColor || strokeColor || lineWidth)) {
+    ctx.fillStyle = fillColor || "black";
+    ctx.strokeStyle = strokeColor || "black";
+    ctx.lineWidth = lineWidth || 10;
   }
 
   switch (tool) {

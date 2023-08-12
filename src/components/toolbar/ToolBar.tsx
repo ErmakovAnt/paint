@@ -12,14 +12,14 @@ interface toolBarProps {
 
 const Toolbar = ({ canvas }: toolBarProps) => {
   const dispatch = useAppDispatch();
-  const activeTool = useAppSelector((state) => state.tool.tool);
+  const { tool } = useAppSelector((state) => state.tool);
 
   return (
     <div className={style.toolbar}>
       <div className={style.toolbar_top}>
         {toolNames.map((item) => (
           <div
-            className={activeTool === item ? style.activeSvg : style.svg}
+            className={tool === item ? style.activeSvg : style.svg}
             key={item}
             onClick={() => {
               dispatch(setTool(item));
@@ -38,7 +38,7 @@ const Toolbar = ({ canvas }: toolBarProps) => {
               dispatch(setTool(item));
               tools(item, canvas);
             }}
-            className={activeTool === item ? style.activeSvg : style.svg}
+            className={tool === item ? style.activeSvg : style.svg}
           >
             <SvgSelector tool={item} />
           </div>

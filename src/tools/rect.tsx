@@ -1,5 +1,5 @@
 export function rect(
-  canvas: HTMLCanvasElement | null,
+  canvas: HTMLCanvasElement | null | undefined,
   ctx: CanvasRenderingContext2D | null | undefined
 ) {
   let mouseDown: boolean;
