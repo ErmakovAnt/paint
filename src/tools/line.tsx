@@ -1,13 +1,12 @@
-export function brush(
+export function line(
   canvas: HTMLCanvasElement | null,
   ctx: CanvasRenderingContext2D | null | undefined
 ) {
   let mouseDown: boolean;
-  if (canvas || canvas) {
-    canvas.onmousedown = null;
-    canvas.onmousemove = null;
-    canvas.onmouseup = null;
-  }
+  let currentX: number;
+  let currentY: number;
+  let saved: string;
+
   function listen() {
     if (canvas) {
       canvas.onmousemove = mouseMoveHandler;
@@ -22,7 +21,9 @@ export function brush(
   function mouseDownHandler(e: MouseEvent) {
     if (canvas) {
       ctx?.beginPath();
-      ctx?.moveTo(e.offsetX, e.offsetY);
+      currentX = e.offsetX;
+      currentY = e.offsetY;
+      saved = canvas.toDataURL();
     }
     mouseDown = true;
   }
@@ -33,7 +34,18 @@ export function brush(
   }
 
   function draw(x: number, y: number) {
-    ctx?.fillRect(x - 6, y - 6, 10, 10);
-    ctx?.stroke();
+    const img = new Image();
+    img.src = saved;
+    img.onload = () => {
+      if (canvas) {
+        ctx?.clearRect(0, 0, canvas?.width, canvas?.height);
+        ctx?.drawImage(img, 0, 0, canvas?.width, canvas?.height);
+        ctx?.beginPath();
+        ctx?.moveTo(currentX, currentY);
+        ctx?.lineTo(x, y);
+        ctx?.fill();
+        ctx?.stroke();
+      }
+    };
   }
 }

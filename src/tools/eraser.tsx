@@ -1,4 +1,4 @@
-export function brush(
+export function eraser(
   canvas: HTMLCanvasElement | null,
   ctx: CanvasRenderingContext2D | null | undefined
 ) {
@@ -20,7 +20,8 @@ export function brush(
     mouseDown = false;
   }
   function mouseDownHandler(e: MouseEvent) {
-    if (canvas) {
+    if (canvas && ctx) {
+      ctx.fillStyle = "white";
       ctx?.beginPath();
       ctx?.moveTo(e.offsetX, e.offsetY);
     }
@@ -35,5 +36,6 @@ export function brush(
   function draw(x: number, y: number) {
     ctx?.fillRect(x - 6, y - 6, 10, 10);
     ctx?.stroke();
+    ctx?.fill();
   }
 }

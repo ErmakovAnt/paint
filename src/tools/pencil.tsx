@@ -18,13 +18,13 @@ export function pencil(
   function mouseDownHandler(e: MouseEvent) {
     if (canvas) {
       ctx?.beginPath();
-      ctx?.moveTo(e.pageX - canvas.offsetLeft, e.pageY - canvas.offsetTop);
+      ctx?.moveTo(e.offsetX, e.offsetY);
     }
     mouseDown = true;
   }
   function mouseMoveHandler(e: MouseEvent) {
     if (mouseDown && canvas) {
-      draw(e.pageX - canvas.offsetLeft, e.pageY - canvas.offsetTop);
+      draw(e.offsetX, e.offsetY);
     }
   }
 
