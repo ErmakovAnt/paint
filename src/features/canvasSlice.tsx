@@ -1,6 +1,9 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+interface CanvasState {
+  canvas: HTMLCanvasElement | null;
+}
 
-const initialState = {
+const initialState: CanvasState = {
   canvas: null,
 };
 const canvasSlice = createSlice({
