@@ -3,11 +3,7 @@ export function eraser(
   ctx: CanvasRenderingContext2D | null | undefined
 ) {
   let mouseDown: boolean;
-  if (canvas || canvas) {
-    canvas.onmousedown = null;
-    canvas.onmousemove = null;
-    canvas.onmouseup = null;
-  }
+
   function listen() {
     if (canvas) {
       canvas.onmousemove = mouseMoveHandler;
@@ -34,7 +30,7 @@ export function eraser(
   }
 
   function draw(x: number, y: number) {
-    ctx?.fillRect(x - 6, y - 6, 10, 10);
+    ctx?.fillRect(x - 6, y - 6, 15, 15);
     ctx?.stroke();
     ctx?.fill();
   }

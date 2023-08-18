@@ -19,7 +19,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
 
   useEffect(() => {
     dispatch(setCanvas(canvasRef.current));
-    tools(tool, canvasRef.current);
+    tools({ tool, canvas: canvasRef.current });
   }, [tool]);
 
   const mouseDownHandler = () => {

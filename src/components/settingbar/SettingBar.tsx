@@ -14,7 +14,7 @@ const SettingBar = () => {
   } = useAppSelector((state) => state);
 
   useEffect(() => {
-    tools(tool, canvas, fillColor, strokeColor, lineWidth);
+    tools({ tool, canvas, fillColor, strokeColor, lineWidth });
   }, [tool, canvas, fillColor, strokeColor, lineWidth]);
 
   return (

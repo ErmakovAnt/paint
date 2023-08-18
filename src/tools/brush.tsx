@@ -3,11 +3,7 @@ export function brush(
   ctx: CanvasRenderingContext2D | null | undefined
 ) {
   let mouseDown: boolean;
-  if (canvas || canvas) {
-    canvas.onmousedown = null;
-    canvas.onmousemove = null;
-    canvas.onmouseup = null;
-  }
+
   function listen() {
     if (canvas) {
       canvas.onmousemove = mouseMoveHandler;
