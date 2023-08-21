@@ -1,8 +1,8 @@
 # 🎨 Paint project
+
 Description:
 
 The Paint project is a drawing tool developed using TypeScript and React. This platform offers intuitive drawing functions.
-
 
 ## 🚀 Quick Start
 
@@ -36,12 +36,12 @@ npm start
 
 Experience the dynamic features of paint tool in real-time! Explore the project's live version here:
 
-[![**Online Store Live Demo**](https://github.com/ErmakovAnt/paint/raw/main/public/paint.png)](https://paint-hazel.vercel.app/)
+[![**Online Store Live Demo**](https://github.com/ErmakovAnt/paint/raw/main/frontend/public/paint.png)](https://paint-hazel.vercel.app/)
 
 # 🌟 Upcoming Features
 
-- 🔄 **WebSockets Drawing Integration:** 
-   In the near future, I plan to introduce real-time drawing capabilities via WebSockets. This will allow multiple users to collaborate on a single canvas in real-time.
+- 🔄 **WebSockets Drawing Integration:**
+  In the near future, I plan to introduce real-time drawing capabilities via WebSockets. This will allow multiple users to collaborate on a single canvas in real-time.
 
-- 💾 **Save Drawing Functionality:** 
-   Users will soon have the capability to save their artworks, enabling them to capture their creative moments.
+- 💾 **Save Drawing Functionality:**
+  Users will soon have the capability to save their artworks, enabling them to capture their creative moments.
