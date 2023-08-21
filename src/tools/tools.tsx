@@ -1,20 +1,27 @@
 import { brush } from "./brush";
-import { cirlce } from "./circle";
+import { circle } from "./circle";
 import { eraser } from "./eraser";
 import { line } from "./line";
 import { pencil } from "./pencil";
 import { rect } from "./rect";
 
 interface toolsArgs {
-  tool: string | null;
+  tool: string;
   canvas: HTMLCanvasElement | null;
   fillColor?: string;
   strokeColor?: string;
   lineWidth?: number;
 }
+type ActionCallback = (
+  canvas: HTMLCanvasElement | null,
+  ctx: CanvasRenderingContext2D | null | undefined
+) => void;
+
+type ActionMap = { [action: string]: ActionCallback };
 
 export function tools(args: toolsArgs) {
   const { tool, canvas, fillColor, strokeColor, lineWidth } = args;
+
   let ctx = canvas?.getContext("2d");
 
   if (canvas && ctx && (fillColor || strokeColor || lineWidth)) {
@@ -23,26 +30,16 @@ export function tools(args: toolsArgs) {
     ctx.lineWidth = lineWidth || 10;
   }
 
-  switch (tool) {
-    case "pencil":
-      pencil(canvas, ctx);
-      break;
-    case "brush":
-      brush(canvas, ctx);
-      break;
-    case "rect":
-      rect(canvas, ctx);
-      break;
-    case "circle":
-      cirlce(canvas, ctx);
-      break;
-    case "line":
-      line(canvas, ctx);
-      break;
-    case "erase":
-      eraser(canvas, ctx);
-      break;
-    default:
-      break;
-  }
+  const toolsMap: ActionMap = {
+    pencil,
+    brush,
+    rect,
+    circle,
+    line,
+    eraser,
+  };
+
+  const action: ActionCallback = toolsMap[tool];
+
+  action(canvas, ctx);
 }

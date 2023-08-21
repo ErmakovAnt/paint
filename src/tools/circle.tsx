@@ -1,4 +1,4 @@
-export function cirlce(
+export function circle(
   canvas: HTMLCanvasElement | null | undefined,
   ctx: CanvasRenderingContext2D | null | undefined
 ) {
