@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 
 import style from "../../styles/Canvas.module.css";
 import Toolbar from "../toolbar/ToolBar";
-import { setCanvas } from "../../features/canvasSlice";
 import { tools } from "../../tools/tools";
-import { useAppDispatch, useAppSelector } from "../../features/hook";
+import { useAppDispatch, useAppSelector } from "../../redux/features/hook";
+import { setCanvas } from "../../redux/features/canvasSlice";
 
 interface CanvasProps {
   width: number;

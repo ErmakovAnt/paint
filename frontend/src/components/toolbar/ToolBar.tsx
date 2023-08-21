@@ -5,10 +5,10 @@ import {
   tools as toolNames,
   functions as functionNames,
 } from "../../utils/toolNames";
-import { setTool } from "../../features/toolSlice";
 import { tools } from "../../tools/tools";
-import { useAppDispatch, useAppSelector } from "../../features/hook";
 import { functions } from "../../functions/functions";
+import { useAppDispatch, useAppSelector } from "../../redux/features/hook";
+import { setTool } from "../../redux/features/toolSlice";
 
 interface Props {
   undoArr: string[] | any[];
