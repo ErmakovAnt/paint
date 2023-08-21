@@ -36,7 +36,7 @@ npm start
 
 Experience the dynamic features of paint tool in real-time! Explore the project's live version here:
 
-[![**Online Store Live Demo**](https://github.com/ErmakovAnt/paint/raw/main/public/paint.png)](https://paint-hazel.vercel.app/)
+[![**Online Store Live Demo**](https://github.com/ErmakovAnt/paint/raw/main/frontend/public/paint.png)](https://paint-hazel.vercel.app/)
 
 # 🌟 Upcoming Features
 
