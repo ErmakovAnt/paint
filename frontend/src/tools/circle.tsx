@@ -1,11 +1,14 @@
 export function circle(
   canvas: HTMLCanvasElement | null | undefined,
-  ctx: CanvasRenderingContext2D | null | undefined
+  ctx: CanvasRenderingContext2D | null | undefined,
+  socket: WebSocket | null | undefined,
+  id: string | null | undefined
 ) {
   let mouseDown: boolean;
   let startX: number;
   let startY: number;
   let saved: string;
+  let radius: number;
 
   function listen() {
     if (canvas) {
@@ -17,6 +20,18 @@ export function circle(
   listen();
   function mouseUpHandler(e: MouseEvent) {
     mouseDown = false;
+    socket?.send(
+      JSON.stringify({
+        method: "draw",
+        id,
+        figure: {
+          type: "circle",
+          x: startX,
+          y: startY,
+          radius,
+        },
+      })
+    );
   }
   function mouseDownHandler(e: MouseEvent) {
     if (canvas) {
@@ -33,24 +48,7 @@ export function circle(
       let currentY = e.offsetY;
       let width = currentX - startX;
       let height = currentY - startY;
-      let r = Math.sqrt(width ** 2 + height ** 2);
-      draw(startX, startY, r);
+      radius = Math.sqrt(width ** 2 + height ** 2);
     }
-  }
-
-  function draw(x: number, y: number, r: number) {
-    const img = new Image();
-    img.src = saved;
-    img.onload = () => {
-      if (canvas) {
-        let pi = Math.PI;
-        ctx?.clearRect(0, 0, canvas?.width, canvas?.height);
-        ctx?.drawImage(img, 0, 0, canvas?.width, canvas?.height);
-        ctx?.beginPath();
-        ctx?.arc(x, y, r, 0, 2 * pi, false);
-        ctx?.fill();
-        ctx?.stroke();
-      }
-    };
   }
 }

@@ -1,6 +1,8 @@
 export function brush(
   canvas: HTMLCanvasElement | null | undefined,
-  ctx: CanvasRenderingContext2D | null | undefined
+  ctx: CanvasRenderingContext2D | null | undefined,
+  socket: WebSocket | null | undefined,
+  id: string | null | undefined
 ) {
   let mouseDown: boolean;
 
@@ -14,6 +16,17 @@ export function brush(
   listen();
   function mouseUpHandler(e: MouseEvent) {
     mouseDown = false;
+    if (socket) {
+      socket.send(
+        JSON.stringify({
+          method: "draw",
+          id,
+          figure: {
+            type: "finish",
+          },
+        })
+      );
+    }
   }
   function mouseDownHandler(e: MouseEvent) {
     if (canvas) {
@@ -23,13 +36,18 @@ export function brush(
     mouseDown = true;
   }
   function mouseMoveHandler(e: MouseEvent) {
-    if (mouseDown && canvas) {
-      draw(e.offsetX, e.offsetY);
+    if (mouseDown) {
+      socket?.send(
+        JSON.stringify({
+          method: "draw",
+          id,
+          figure: {
+            type: "brush",
+            x: e.offsetX,
+            y: e.offsetY,
+          },
+        })
+      );
     }
-  }
-
-  function draw(x: number, y: number) {
-    ctx?.lineTo(x - 6, y - 6);
-    ctx?.stroke();
   }
 }

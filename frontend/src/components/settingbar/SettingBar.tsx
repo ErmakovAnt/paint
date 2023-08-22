@@ -9,13 +9,13 @@ const SettingBar = () => {
   const [lineWidth, setLineWidth] = useState<number>(10);
 
   const {
-    canvas: { canvas },
+    canvas: { canvas, socket, id },
     tool: { tool },
   } = useAppSelector((state) => state);
 
   useEffect(() => {
-    tools({ tool, canvas, fillColor, strokeColor, lineWidth });
-  }, [tool, canvas, fillColor, strokeColor, lineWidth]);
+    tools({ tool, canvas, fillColor, strokeColor, lineWidth, socket, id });
+  }, [tool, canvas, fillColor, strokeColor, lineWidth, socket, id]);
 
   return (
     <div className={style.settingbar}>

@@ -1,6 +1,8 @@
 export function eraser(
   canvas: HTMLCanvasElement | null | undefined,
-  ctx: CanvasRenderingContext2D | null | undefined
+  ctx: CanvasRenderingContext2D | null | undefined,
+  socket: WebSocket | null | undefined,
+  id: string | null | undefined
 ) {
   let mouseDown: boolean;
 
@@ -14,24 +16,41 @@ export function eraser(
   listen();
   function mouseUpHandler(e: MouseEvent) {
     mouseDown = false;
+    if (socket) {
+      socket.send(
+        JSON.stringify({
+          method: "draw",
+          id,
+          figure: {
+            type: "finish",
+          },
+        })
+      );
+    }
   }
   function mouseDownHandler(e: MouseEvent) {
     if (canvas && ctx) {
       ctx.fillStyle = "white";
+      ctx.strokeStyle = "white";
+      ctx.lineWidth = 10;
       ctx?.beginPath();
       ctx?.moveTo(e.offsetX, e.offsetY);
+      mouseDown = true;
     }
-    mouseDown = true;
   }
   function mouseMoveHandler(e: MouseEvent) {
-    if (mouseDown && canvas) {
-      draw(e.offsetX, e.offsetY);
-    }
-  }
+    if (!mouseDown) return;
 
-  function draw(x: number, y: number) {
-    ctx?.fillRect(x - 6, y - 6, 15, 15);
-    ctx?.stroke();
-    ctx?.fill();
+    socket?.send(
+      JSON.stringify({
+        method: "draw",
+        id,
+        figure: {
+          type: "eraser",
+          x: e.offsetX,
+          y: e.offsetY,
+        },
+      })
+    );
   }
 }

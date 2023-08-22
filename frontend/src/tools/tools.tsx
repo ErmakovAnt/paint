@@ -11,16 +11,20 @@ interface toolsArgs {
   fillColor?: string;
   strokeColor?: string;
   lineWidth?: number;
+  socket?: WebSocket | null | undefined;
+  id?: string | null | undefined;
 }
 type ActionCallback = (
   canvas: HTMLCanvasElement | null,
-  ctx: CanvasRenderingContext2D | null | undefined
+  ctx: CanvasRenderingContext2D | null | undefined,
+  socket: WebSocket | null | undefined,
+  id: string | null | undefined
 ) => void;
 
 type ActionMap = { [action: string]: ActionCallback };
 
 export function tools(args: toolsArgs) {
-  const { tool, canvas, fillColor, strokeColor, lineWidth } = args;
+  const { tool, canvas, fillColor, strokeColor, lineWidth, socket, id } = args;
 
   let ctx = canvas?.getContext("2d");
 
@@ -41,5 +45,5 @@ export function tools(args: toolsArgs) {
 
   const action: ActionCallback = toolsMap[tool];
 
-  action(canvas, ctx);
+  action(canvas, ctx, socket, id);
 }
