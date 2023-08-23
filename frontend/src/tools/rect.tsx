@@ -9,6 +9,7 @@ export function rect(
   let startY: number;
   let width: number;
   let height: number;
+  let saved: string;
 
   function listen() {
     if (canvas) {
@@ -39,6 +40,7 @@ export function rect(
       ctx?.beginPath();
       startX = e.offsetX;
       startY = e.offsetY;
+      saved = canvas.toDataURL();
     }
     mouseDown = true;
   }
@@ -48,6 +50,27 @@ export function rect(
       let currentY = e.offsetY;
       width = currentX - startX;
       height = currentY - startY;
+
+      const img = new Image();
+      img.src = saved;
+      img.onload = () => {
+        ctx?.clearRect(0, 0, canvas.width, canvas.height);
+        ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+        drawRect(ctx, startX, startY, width, height);
+      };
     }
   }
+}
+
+export function drawRect(
+  ctx: CanvasRenderingContext2D | null | undefined,
+  x: number,
+  y: number,
+  w: number,
+  h: number
+) {
+  ctx?.beginPath();
+  ctx?.rect(x, y, w, h);
+  ctx?.fill();
+  ctx?.stroke();
 }

@@ -49,6 +49,26 @@ export function circle(
       let width = currentX - startX;
       let height = currentY - startY;
       radius = Math.sqrt(width ** 2 + height ** 2);
+      const img = new Image();
+      img.src = saved;
+      img.onload = () => {
+        ctx?.clearRect(0, 0, canvas.width, canvas.height);
+        ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+        drawCirlce(ctx, startX, startY, radius);
+      };
     }
   }
+}
+
+export function drawCirlce(
+  ctx: CanvasRenderingContext2D | null | undefined,
+  x: number,
+  y: number,
+  r: number
+) {
+  let pi = Math.PI;
+  ctx?.beginPath();
+  ctx?.arc(x, y, r, 0, 2 * pi, false);
+  ctx?.fill();
+  ctx?.stroke();
 }

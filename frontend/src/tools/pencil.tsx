@@ -52,3 +52,12 @@ export function pencil(
     }
   }
 }
+
+export function drawPencil(
+  ctx: CanvasRenderingContext2D | null | undefined,
+  x: number,
+  y: number
+) {
+  ctx?.lineTo(x, y);
+  ctx?.stroke();
+}

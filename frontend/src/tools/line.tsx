@@ -7,6 +7,7 @@ export function line(
   let mouseDown: boolean;
   let currentX: number;
   let currentY: number;
+  let saved: string;
 
   function listen() {
     if (canvas) {
@@ -37,12 +38,32 @@ export function line(
       ctx?.beginPath();
       currentX = e.offsetX;
       currentY = e.offsetY;
+      saved = canvas.toDataURL();
     }
     mouseDown = true;
   }
   function mouseMoveHandler(e: MouseEvent) {
-    // if (mouseDown && canvas) {
-    //   draw(e.offsetX, e.offsetY);
-    // }
+    if (mouseDown && canvas) {
+      const img = new Image();
+      img.src = saved;
+      img.onload = () => {
+        ctx?.clearRect(0, 0, canvas.width, canvas.height);
+        ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+        drawLine(ctx, e.offsetX, e.offsetY, currentX, currentY);
+      };
+    }
   }
+}
+
+export function drawLine(
+  ctx: CanvasRenderingContext2D | null | undefined,
+  x: number,
+  y: number,
+  currentX: number,
+  currentY: number
+) {
+  ctx?.beginPath();
+  ctx?.moveTo(currentX, currentY);
+  ctx?.lineTo(x, y);
+  ctx?.stroke();
 }

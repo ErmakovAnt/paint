@@ -51,3 +51,8 @@ export function brush(
     }
   }
 }
+
+export function drawBrush(ctx: any, x: number, y: number) {
+  ctx?.lineTo(x - 6, y - 6);
+  ctx?.stroke();
+}
