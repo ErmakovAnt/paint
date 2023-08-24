@@ -48,49 +48,57 @@ export function tools(args: toolsArgs) {
   action(canvas, ctx, socket, id);
 }
 
-export const drawHandler = (
-  canvas: HTMLCanvasElement | null,
-  msg: {
-    id: string;
-    username: string;
-    method: string;
-    figure: {
-      type: string;
-      x: number;
-      y: number;
-      width?: number | undefined;
-      height?: number | undefined;
-      radius?: number | undefined;
-      currentX?: number | undefined;
-      currentY?: number | undefined;
-    };
-  }
-) => {
+interface Figure {
+  type: string;
+  x: number;
+  y: number;
+  width?: number | undefined;
+  height?: number | undefined;
+  radius?: number | undefined;
+  currentX?: number | undefined;
+  currentY?: number | undefined;
+}
+
+interface Message {
+  id: string;
+  username: string;
+  method: string;
+  figure: Figure;
+}
+
+type ActionsCallback = (
+  type: string,
+  x: number,
+  y: number,
+  width?: number | undefined,
+  height?: number | undefined,
+  radius?: number | undefined,
+  currentX?: number | undefined,
+  currentY?: number | undefined
+) => void;
+
+type Actions = { [action: string]: ActionsCallback };
+
+export const drawHandler = (canvas: HTMLCanvasElement | null, msg: Message) => {
   const figure = msg.figure;
   const ctx = canvas?.getContext("2d");
-  switch (figure.type) {
-    case "brush":
-      drawBrush(ctx, figure.x, figure.y);
-      break;
-    case "rect":
-      if (figure.width && figure.height)
-        drawRect(ctx, figure.x, figure.y, figure.width, figure.height);
-      break;
-    case "circle":
-      if (figure.radius) drawCirlce(ctx, figure.x, figure.y, figure.radius);
-      break;
-    case "eraser":
-      drawEraser(ctx, figure.x, figure.y);
-      break;
-    case "line":
-      if (figure.currentX && figure.currentY)
-        drawLine(ctx, figure.x, figure.y, figure.currentX, figure.currentY);
-      break;
-    case "pencil":
-      drawPencil(ctx, figure.x, figure.y);
-      break;
-    case "finish":
-      ctx?.beginPath();
-      break;
-  }
+
+  const { type, x, y, width, height, radius, currentX, currentY } = figure;
+
+  const actions: Actions = {
+    brush: () => drawBrush(ctx, x, y),
+    rect: () => width && height && drawRect(ctx, x, y, width, height),
+    circle: () => radius && drawCirlce(ctx, x, y, radius),
+    eraser: () => drawEraser(ctx, x, y),
+    line: () =>
+      currentX &&
+      currentY &&
+      drawLine(ctx, figure.x, figure.y, currentX, currentY),
+    pencil: () => drawPencil(ctx, x, y),
+    finish: () => ctx?.beginPath(),
+  };
+
+  const action = actions[type];
+
+  action(type, x, y, width, height, radius, currentX, currentY);
 };

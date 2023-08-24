@@ -1,7 +1,8 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import style from "../../styles/SettingBar.module.css";
 import { tools } from "../../tools/tools";
 import { useAppSelector } from "../../redux/features/hook";
+
+import style from "../../styles/SettingBar.module.css";
 
 const SettingBar = () => {
   const [fillColor, setFillColor] = useState<string>("black");

@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-
-import style from "../../styles/Canvas.module.css";
-import Toolbar from "../toolbar/ToolBar";
 import { drawHandler, tools } from "../../tools/tools";
 import { useAppDispatch, useAppSelector } from "../../redux/features/hook";
 import { setCanvas, setId, setSocket } from "../../redux/features/canvasSlice";
 import { useParams } from "react-router-dom";
+
+import style from "../../styles/Canvas.module.css";
+import Toolbar from "../toolbar/ToolBar";
 
 interface CanvasProps {
   width: number;
