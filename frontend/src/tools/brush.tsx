@@ -1,9 +1,8 @@
-export function brush(
-  canvas: HTMLCanvasElement | null | undefined,
-  ctx: CanvasRenderingContext2D | null | undefined,
-  socket: WebSocket | null | undefined,
-  id: string | null | undefined
-) {
+import { DrawArgs, ToolType } from "../types/toolsType";
+
+export const brush: ToolType = (args) => {
+  const { canvas, ctx, socket, id, fillColor, strokeColor, lineWidth } = args;
+
   let mouseDown: boolean;
 
   function listen() {
@@ -14,7 +13,7 @@ export function brush(
     }
   }
   listen();
-  function mouseUpHandler(e: MouseEvent) {
+  function mouseUpHandler() {
     mouseDown = false;
     if (socket) {
       socket.send(
@@ -45,14 +44,25 @@ export function brush(
             type: "brush",
             x: e.offsetX,
             y: e.offsetY,
+            fillColor,
+            strokeColor,
+            lineWidth,
           },
         })
       );
     }
   }
-}
+};
 
-export function drawBrush(ctx: any, x: number, y: number) {
+export function drawBrush(args: DrawArgs) {
+  const { ctx, x, y, fillColor, strokeColor, lineWidth } = args;
+
+  if (ctx) {
+    ctx.fillStyle = fillColor || "black";
+    ctx.strokeStyle = strokeColor || "black";
+    ctx.lineWidth = lineWidth || 10;
+  }
+
   ctx?.lineTo(x - 6, y - 6);
   ctx?.stroke();
 }

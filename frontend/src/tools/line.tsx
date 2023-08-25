@@ -1,9 +1,8 @@
-export function line(
-  canvas: HTMLCanvasElement | null | undefined,
-  ctx: CanvasRenderingContext2D | null | undefined,
-  socket: WebSocket | null | undefined,
-  id: string | null | undefined
-) {
+import { DrawArgs, ToolType } from "../types/toolsType";
+
+export const line: ToolType = (args) => {
+  const { canvas, ctx, socket, id, fillColor, strokeColor, lineWidth } = args;
+
   let mouseDown: boolean;
   let currentX: number;
   let currentY: number;
@@ -29,6 +28,9 @@ export function line(
           y: e.offsetY,
           currentX,
           currentY,
+          fillColor,
+          strokeColor,
+          lineWidth,
         },
       })
     );
@@ -43,25 +45,41 @@ export function line(
     mouseDown = true;
   }
   function mouseMoveHandler(e: MouseEvent) {
+    if (ctx) {
+      ctx.fillStyle = fillColor || "black";
+      ctx.strokeStyle = strokeColor || "black";
+      ctx.lineWidth = lineWidth || 10;
+    }
+
     if (mouseDown && canvas) {
       const img = new Image();
       img.src = saved;
       img.onload = () => {
         ctx?.clearRect(0, 0, canvas.width, canvas.height);
         ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
-        drawLine(ctx, e.offsetX, e.offsetY, currentX, currentY);
+        drawLine({ ctx, y: e.offsetX, x: e.offsetY, currentX, currentY });
       };
     }
   }
-}
+};
 
-export function drawLine(
-  ctx: CanvasRenderingContext2D | null | undefined,
-  x: number,
-  y: number,
-  currentX: number,
-  currentY: number
-) {
+export function drawLine(args: DrawArgs) {
+  const {
+    ctx,
+    x,
+    y,
+    currentX = 0,
+    currentY = 0,
+    fillColor,
+    strokeColor,
+    lineWidth,
+  } = args;
+  if (ctx) {
+    ctx.fillStyle = fillColor || "black";
+    ctx.strokeStyle = strokeColor || "black";
+    ctx.lineWidth = lineWidth || 10;
+  }
+
   ctx?.beginPath();
   ctx?.moveTo(currentX, currentY);
   ctx?.lineTo(x, y);

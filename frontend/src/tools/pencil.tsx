@@ -1,9 +1,8 @@
-export function pencil(
-  canvas: HTMLCanvasElement | null | undefined,
-  ctx: CanvasRenderingContext2D | null | undefined,
-  socket: WebSocket | null | undefined,
-  id: string | null | undefined
-) {
+import { DrawArgs, ToolType } from "../types/toolsType";
+
+export const pencil: ToolType = (args) => {
+  const { canvas, ctx, socket, id, fillColor, strokeColor } = args;
+
   let mouseDown: boolean;
 
   function listen() {
@@ -14,7 +13,7 @@ export function pencil(
     }
   }
   listen();
-  function mouseUpHandler(e: MouseEvent) {
+  function mouseUpHandler() {
     mouseDown = false;
     if (socket) {
       socket.send(
@@ -29,12 +28,17 @@ export function pencil(
     }
   }
   function mouseDownHandler(e: MouseEvent) {
+    mouseDown = true;
+    if (ctx) {
+      ctx.fillStyle = fillColor || "black";
+      ctx.strokeStyle = strokeColor || "black";
+    }
+
     if (canvas && ctx) {
       ctx?.beginPath();
       ctx?.moveTo(e.offsetX, e.offsetY);
       ctx.lineWidth = 1;
     }
-    mouseDown = true;
   }
   function mouseMoveHandler(e: MouseEvent) {
     if (mouseDown && canvas) {
@@ -46,18 +50,22 @@ export function pencil(
             type: "pencil",
             x: e.offsetX,
             y: e.offsetY,
+            fillColor,
+            strokeColor,
           },
         })
       );
     }
   }
-}
+};
 
-export function drawPencil(
-  ctx: CanvasRenderingContext2D | null | undefined,
-  x: number,
-  y: number
-) {
+export function drawPencil(args: DrawArgs) {
+  const { ctx, x, y, fillColor, strokeColor } = args;
+  if (ctx) {
+    ctx.fillStyle = fillColor || "black";
+    ctx.strokeStyle = strokeColor || "black";
+  }
+
   ctx?.lineTo(x, y);
   ctx?.stroke();
 }

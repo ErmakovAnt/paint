@@ -1,9 +1,8 @@
-export function rect(
-  canvas: HTMLCanvasElement | null | undefined,
-  ctx: CanvasRenderingContext2D | null | undefined,
-  socket: WebSocket | null | undefined,
-  id: string | null | undefined
-) {
+import { DrawArgs, ToolType } from "../types/toolsType";
+
+export const rect: ToolType = (args) => {
+  const { canvas, ctx, socket, id, fillColor, strokeColor } = args;
+
   let mouseDown: boolean;
   let startX: number;
   let startY: number;
@@ -19,7 +18,7 @@ export function rect(
     }
   }
   listen();
-  function mouseUpHandler(e: MouseEvent) {
+  function mouseUpHandler() {
     mouseDown = false;
     socket?.send(
       JSON.stringify({
@@ -31,6 +30,8 @@ export function rect(
           y: startY,
           width,
           height,
+          fillColor,
+          strokeColor,
         },
       })
     );
@@ -45,6 +46,11 @@ export function rect(
     mouseDown = true;
   }
   function mouseMoveHandler(e: MouseEvent) {
+    if (ctx) {
+      ctx.fillStyle = fillColor || "black";
+      ctx.strokeStyle = strokeColor || "black";
+    }
+
     if (mouseDown && canvas) {
       let currentX = e.offsetX;
       let currentY = e.offsetY;
@@ -56,21 +62,21 @@ export function rect(
       img.onload = () => {
         ctx?.clearRect(0, 0, canvas.width, canvas.height);
         ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
-        drawRect(ctx, startX, startY, width, height);
+        drawRect({ ctx, x: startX, y: startY, w: width, h: height });
       };
     }
   }
-}
+};
 
-export function drawRect(
-  ctx: CanvasRenderingContext2D | null | undefined,
-  x: number,
-  y: number,
-  w: number,
-  h: number
-) {
+export const drawRect = (args: DrawArgs) => {
+  const { ctx, x, y, w = 0, h = 0, fillColor, strokeColor } = args;
+  if (ctx && (fillColor || strokeColor)) {
+    ctx.fillStyle = fillColor || "black";
+    ctx.strokeStyle = strokeColor || "black";
+  }
+
   ctx?.beginPath();
   ctx?.rect(x, y, w, h);
   ctx?.fill();
   ctx?.stroke();
-}
+};

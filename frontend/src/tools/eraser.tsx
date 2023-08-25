@@ -1,9 +1,7 @@
-export function eraser(
-  canvas: HTMLCanvasElement | null | undefined,
-  ctx: CanvasRenderingContext2D | null | undefined,
-  socket: WebSocket | null | undefined,
-  id: string | null | undefined
-) {
+import { DrawArgs, ToolType } from "../types/toolsType";
+
+export const eraser: ToolType = (args) => {
+  const { canvas, ctx, socket, id, lineWidth } = args;
   let mouseDown: boolean;
 
   function listen() {
@@ -14,7 +12,7 @@ export function eraser(
     }
   }
   listen();
-  function mouseUpHandler(e: MouseEvent) {
+  function mouseUpHandler() {
     mouseDown = false;
     if (socket) {
       socket.send(
@@ -49,17 +47,22 @@ export function eraser(
           type: "eraser",
           x: e.offsetX,
           y: e.offsetY,
+          fillColor: "white",
+          strokeColor: "white",
+          lineWidth,
         },
       })
     );
   }
-}
+};
 
-export function drawEraser(
-  ctx: CanvasRenderingContext2D | null | undefined,
-  x: number,
-  y: number
-) {
+export function drawEraser(args: DrawArgs) {
+  const { ctx, x, y, fillColor, strokeColor, lineWidth } = args;
+  if (ctx) {
+    ctx.fillStyle = fillColor || "black";
+    ctx.strokeStyle = strokeColor || "black";
+    ctx.lineWidth = lineWidth || 10;
+  }
   ctx?.lineTo(x, y);
   ctx?.stroke();
 }

@@ -1,3 +1,10 @@
+import {
+  ActionCallback,
+  ActionMap,
+  Actions,
+  Message,
+  toolsArgs,
+} from "../types/toolsType";
 import { brush, drawBrush } from "./brush";
 import { circle, drawCirlce } from "./circle";
 import { eraser, drawEraser } from "./eraser";
@@ -5,35 +12,10 @@ import { line, drawLine } from "./line";
 import { pencil, drawPencil } from "./pencil";
 import { rect, drawRect } from "./rect";
 
-interface toolsArgs {
-  tool: string;
-  canvas: HTMLCanvasElement | null;
-  fillColor?: string;
-  strokeColor?: string;
-  lineWidth?: number;
-  socket?: WebSocket | null | undefined;
-  id?: string | null | undefined;
-}
-type ActionCallback = (
-  canvas: HTMLCanvasElement | null,
-  ctx: CanvasRenderingContext2D | null | undefined,
-  socket: WebSocket | null | undefined,
-  id: string | null | undefined
-) => void;
-
-type ActionMap = { [action: string]: ActionCallback };
-
 export function tools(args: toolsArgs) {
   const { tool, canvas, fillColor, strokeColor, lineWidth, socket, id } = args;
 
   let ctx = canvas?.getContext("2d");
-
-  if (canvas && ctx && (fillColor || strokeColor || lineWidth)) {
-    ctx.fillStyle = fillColor || "black";
-    ctx.strokeStyle = strokeColor || "black";
-    ctx.lineWidth = lineWidth || 10;
-  }
-
   const toolsMap: ActionMap = {
     pencil,
     brush,
@@ -45,60 +27,53 @@ export function tools(args: toolsArgs) {
 
   const action: ActionCallback = toolsMap[tool];
 
-  action(canvas, ctx, socket, id);
+  action({ canvas, ctx, socket, id, fillColor, strokeColor, lineWidth });
 }
-
-interface Figure {
-  type: string;
-  x: number;
-  y: number;
-  width?: number | undefined;
-  height?: number | undefined;
-  radius?: number | undefined;
-  currentX?: number | undefined;
-  currentY?: number | undefined;
-}
-
-interface Message {
-  id: string;
-  username: string;
-  method: string;
-  figure: Figure;
-}
-
-type ActionsCallback = (
-  type: string,
-  x: number,
-  y: number,
-  width?: number | undefined,
-  height?: number | undefined,
-  radius?: number | undefined,
-  currentX?: number | undefined,
-  currentY?: number | undefined
-) => void;
-
-type Actions = { [action: string]: ActionsCallback };
 
 export const drawHandler = (canvas: HTMLCanvasElement | null, msg: Message) => {
   const figure = msg.figure;
   const ctx = canvas?.getContext("2d");
 
-  const { type, x, y, width, height, radius, currentX, currentY } = figure;
+  const {
+    type,
+    x,
+    y,
+    width,
+    height,
+    r,
+    currentX,
+    currentY,
+    fillColor,
+    strokeColor,
+    lineWidth,
+  } = figure;
 
   const actions: Actions = {
-    brush: () => drawBrush(ctx, x, y),
-    rect: () => width && height && drawRect(ctx, x, y, width, height),
-    circle: () => radius && drawCirlce(ctx, x, y, radius),
-    eraser: () => drawEraser(ctx, x, y),
+    brush: () => drawBrush({ ctx, x, y, fillColor, strokeColor, lineWidth }),
+    rect: () =>
+      width &&
+      height &&
+      drawRect({ ctx, x, y, w: width, h: height, fillColor, strokeColor }),
+    circle: () => r && drawCirlce({ ctx, x, y, r, fillColor, strokeColor }),
+    eraser: () => drawEraser({ ctx, x, y, fillColor, strokeColor, lineWidth }),
     line: () =>
       currentX &&
       currentY &&
-      drawLine(ctx, figure.x, figure.y, currentX, currentY),
-    pencil: () => drawPencil(ctx, x, y),
+      drawLine({
+        ctx,
+        x: figure.x,
+        y: figure.y,
+        currentX,
+        currentY,
+        fillColor,
+        strokeColor,
+        lineWidth,
+      }),
+    pencil: () => drawPencil({ ctx, x, y, fillColor, strokeColor }),
     finish: () => ctx?.beginPath(),
   };
 
   const action = actions[type];
 
-  action(type, x, y, width, height, radius, currentX, currentY);
+  action({ type, x, y, width, height, r, currentX, currentY });
 };
