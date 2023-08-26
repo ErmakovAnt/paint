@@ -11,7 +11,8 @@ interface CanvasProps {
   width: number;
   height: number;
 }
-const Canvas = ({ width, height }: CanvasProps) => {
+const Canvas = (props: CanvasProps) => {
+  const { width, height } = props;
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const dispatch = useAppDispatch();
   const {

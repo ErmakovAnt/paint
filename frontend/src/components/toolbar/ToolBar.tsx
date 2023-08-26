@@ -16,7 +16,8 @@ interface Props {
   setUndoArr: (undoArr: string[]) => void;
   setRedoArr: (redoArr: string[]) => void;
 }
-const Toolbar = ({ undoArr, redoArr, setUndoArr, setRedoArr }: Props) => {
+const Toolbar = (props: Props) => {
+  const { undoArr, redoArr, setUndoArr, setRedoArr } = props;
   const dispatch = useAppDispatch();
   const {
     tool: { tool },

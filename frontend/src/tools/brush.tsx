@@ -3,6 +3,12 @@ import { DrawArgs, ToolType } from "../types/toolsType";
 export const brush: ToolType = (args) => {
   const { canvas, ctx, socket, id, fillColor, strokeColor, lineWidth } = args;
 
+  if (canvas) {
+    canvas.onmousemove = null;
+    canvas.onmousedown = null;
+    canvas.onmouseup = null;
+  }
+
   let mouseDown: boolean;
 
   function listen() {
@@ -63,6 +69,6 @@ export function drawBrush(args: DrawArgs) {
     ctx.lineWidth = lineWidth || 10;
   }
 
-  ctx?.lineTo(x - 6, y - 6);
+  ctx?.lineTo(x, y);
   ctx?.stroke();
 }

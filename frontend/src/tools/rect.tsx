@@ -3,6 +3,12 @@ import { DrawArgs, ToolType } from "../types/toolsType";
 export const rect: ToolType = (args) => {
   const { canvas, ctx, socket, id, fillColor, strokeColor } = args;
 
+  if (canvas) {
+    canvas.onmousemove = null;
+    canvas.onmousedown = null;
+    canvas.onmouseup = null;
+  }
+
   let mouseDown: boolean;
   let startX: number;
   let startY: number;

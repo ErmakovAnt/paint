@@ -3,6 +3,12 @@ import { DrawArgs, ToolType } from "../types/toolsType";
 export const pencil: ToolType = (args) => {
   const { canvas, ctx, socket, id, fillColor, strokeColor } = args;
 
+  if (canvas) {
+    canvas.onmousemove = null;
+    canvas.onmousedown = null;
+    canvas.onmouseup = null;
+  }
+
   let mouseDown: boolean;
 
   function listen() {
@@ -64,6 +70,7 @@ export function drawPencil(args: DrawArgs) {
   if (ctx) {
     ctx.fillStyle = fillColor || "black";
     ctx.strokeStyle = strokeColor || "black";
+    ctx.lineWidth = 1;
   }
 
   ctx?.lineTo(x, y);

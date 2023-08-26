@@ -2,6 +2,13 @@ import { DrawArgs, ToolType } from "../types/toolsType";
 
 export const eraser: ToolType = (args) => {
   const { canvas, ctx, socket, id, lineWidth } = args;
+
+  if (canvas) {
+    canvas.onmousemove = null;
+    canvas.onmousedown = null;
+    canvas.onmouseup = null;
+  }
+
   let mouseDown: boolean;
 
   function listen() {

@@ -21,7 +21,7 @@ const SettingBar = () => {
   return (
     <div className={style.settingbar}>
       <label className={style.label} htmlFor="fill-color">
-        Цвет заливки:
+        Fill Color:
       </label>
       <input
         id="fill-color"
@@ -33,7 +33,7 @@ const SettingBar = () => {
         }}
       />
       <label className={style.label} htmlFor="stroke-color">
-        Цвет границы:
+        Stroke color:
       </label>
       <input
         id="stroke-color"
@@ -44,7 +44,7 @@ const SettingBar = () => {
         }}
       />
       <label className={style.label} htmlFor="lineWidth">
-        Ширина линии:
+        Line width:
       </label>
       <input
         id="lineWidth"
