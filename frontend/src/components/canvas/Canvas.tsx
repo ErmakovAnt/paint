@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 
 import style from "../../styles/Canvas.module.css";
 import Toolbar from "../toolbar/ToolBar";
+import { functions } from "../../functions/functions";
+import { socketActions } from "../../utils/socketAction";
 
 interface CanvasProps {
   width: number;
@@ -31,26 +33,18 @@ const Canvas = (props: CanvasProps) => {
       dispatch(setCanvas(canvasRef.current));
       tools({ tool, canvas: canvasRef.current });
 
-      socket.onopen = () => {
-        socket.send(
-          JSON.stringify({
-            id: params.id,
-            username: userName,
-            method: "connection",
-          })
-        );
-      };
-      socket.onmessage = (event) => {
-        let msg = JSON.parse(event.data);
-        switch (msg.method) {
-          case "connection":
-            console.log(`Пользователь ${msg.username} был подключен`);
-            break;
-          case "draw":
-            drawHandler(canvasRef.current, msg);
-            break;
-        }
-      };
+      socketActions(
+        socket,
+        params,
+        userName,
+        canvasRef,
+        drawHandler,
+        functions,
+        undoArr,
+        redoArr,
+        setUndoArr,
+        setRedoArr
+      );
     }
   }, [userName, tool]);
 

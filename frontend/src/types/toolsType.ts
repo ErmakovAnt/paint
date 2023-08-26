@@ -21,21 +21,7 @@ export interface toolsArgs {
 }
 export type ActionCallback = (args: A) => void;
 
-export type ActionMap = { [action: string]: ActionCallback };
-
-interface Figure {
-  type: string;
-  x: number;
-  y: number;
-  width?: number | undefined;
-  height?: number | undefined;
-  r?: number | undefined;
-  currentX?: number | undefined;
-  currentY?: number | undefined;
-  fillColor?: string | undefined;
-  strokeColor?: string | undefined;
-  lineWidth?: number | undefined;
-}
+export type ToolsMap = { [action: string]: ActionCallback };
 
 export interface Message {
   id: string;
@@ -44,9 +30,24 @@ export interface Message {
   figure: Figure;
 }
 
+interface Figure {
+  ctx: CanvasRenderingContext2D | null | undefined;
+  type: string;
+  x: number;
+  y: number;
+  w?: number | undefined;
+  h?: number | undefined;
+  r?: number | undefined;
+  currentX?: number | undefined;
+  currentY?: number | undefined;
+  fillColor?: string | undefined;
+  strokeColor?: string | undefined;
+  lineWidth?: number | undefined;
+}
+
 export type ActionsCallback = (args: Figure) => void;
 
-export type Actions = { [action: string]: ActionsCallback };
+export type DrawFunctionsMap = { [action: string]: ActionsCallback };
 
 export type DrawArgs = {
   ctx: CanvasRenderingContext2D | null | undefined;

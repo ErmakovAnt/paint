@@ -15,6 +15,9 @@ app.ws("/", (ws, req) => {
       case "draw":
         connectionHandler(ws, msg);
         break;
+      case "func":
+        connectionHandler(ws, msg);
+        break;
     }
   });
 });

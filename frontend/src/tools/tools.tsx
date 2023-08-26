@@ -1,7 +1,6 @@
 import {
-  ActionCallback,
-  ActionMap,
-  Actions,
+  ToolsMap,
+  DrawFunctionsMap,
   Message,
   toolsArgs,
 } from "../types/toolsType";
@@ -16,7 +15,7 @@ export function tools(args: toolsArgs) {
   const { tool, canvas, fillColor, strokeColor, lineWidth, socket, id } = args;
 
   let ctx = canvas?.getContext("2d");
-  const toolsMap: ActionMap = {
+  const toolsMap: ToolsMap = {
     pencil,
     brush,
     rect,
@@ -25,7 +24,7 @@ export function tools(args: toolsArgs) {
     eraser,
   };
 
-  const action: ActionCallback = toolsMap[tool];
+  const action = toolsMap[tool];
 
   action({ canvas, ctx, socket, id, fillColor, strokeColor, lineWidth });
 }
@@ -38,8 +37,8 @@ export const drawHandler = (canvas: HTMLCanvasElement | null, msg: Message) => {
     type,
     x,
     y,
-    width,
-    height,
+    w,
+    h,
     r,
     currentX,
     currentY,
@@ -48,32 +47,30 @@ export const drawHandler = (canvas: HTMLCanvasElement | null, msg: Message) => {
     lineWidth,
   } = figure;
 
-  const actions: Actions = {
-    brush: () => drawBrush({ ctx, x, y, fillColor, strokeColor, lineWidth }),
-    rect: () =>
-      width &&
-      height &&
-      drawRect({ ctx, x, y, w: width, h: height, fillColor, strokeColor }),
-    circle: () => r && drawCirlce({ ctx, x, y, r, fillColor, strokeColor }),
-    eraser: () => drawEraser({ ctx, x, y, fillColor, strokeColor, lineWidth }),
-    line: () =>
-      currentX &&
-      currentY &&
-      drawLine({
-        ctx,
-        x: figure.x,
-        y: figure.y,
-        currentX,
-        currentY,
-        fillColor,
-        strokeColor,
-        lineWidth,
-      }),
-    pencil: () => drawPencil({ ctx, x, y, fillColor, strokeColor }),
+  const drawFunctionsMap: DrawFunctionsMap = {
+    brush: drawBrush,
+    rect: drawRect,
+    circle: drawCirlce,
+    eraser: drawEraser,
+    line: drawLine,
+    pencil: drawPencil,
     finish: () => ctx?.beginPath(),
   };
 
-  const action = actions[type];
+  const action = drawFunctionsMap[type];
 
-  action({ type, x, y, width, height, r, currentX, currentY });
+  action({
+    ctx,
+    type,
+    x,
+    y,
+    w,
+    h,
+    r,
+    currentX,
+    currentY,
+    fillColor,
+    strokeColor,
+    lineWidth,
+  });
 };

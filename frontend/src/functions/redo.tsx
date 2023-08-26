@@ -1,17 +1,11 @@
-interface redoArgs {
-  undoArr: string[] | any[];
-  redoArr: string[] | any[];
-  setUndoArr: (undoArr: string[]) => void;
-  setRedoArr: (redoArr: string[]) => void;
-  canvas: HTMLCanvasElement | null | undefined;
-}
+import { UndoAndRedoHandler, UndoandRedoArgs } from "../types/functionsType";
 
-export const handleRedo = (args: redoArgs) => {
+export const handleRedo = (args: UndoandRedoArgs) => {
   const { undoArr, redoArr, setUndoArr, setRedoArr, canvas } = args;
   const lastRedo = redoArr[redoArr.length - 1];
   if (lastRedo) {
     setRedoArr(redoArr.slice(0, -1));
-    if (canvas) setUndoArr([...undoArr, canvas?.toDataURL()]);
+    if (canvas) setUndoArr([...undoArr, canvas.toDataURL()]);
     let img = new Image();
     img.src = lastRedo;
     img.onload = () => {
@@ -22,4 +16,20 @@ export const handleRedo = (args: redoArgs) => {
       }
     };
   }
+};
+
+export const redoHandler: UndoAndRedoHandler = (args) => {
+  const { socket, id, undoArr, redoArr } = args;
+
+  socket?.send(
+    JSON.stringify({
+      method: "func",
+      id,
+      function: {
+        type: "redo",
+        undoArr,
+        redoArr,
+      },
+    })
+  );
 };
