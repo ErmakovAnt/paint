@@ -6,7 +6,7 @@ import {
   functions as functionNames,
 } from "../../utils/toolNames";
 import { tools } from "../../tools/tools";
-import { functions, functionsHandler } from "../../functions/functions";
+import { functionsHandler } from "../../functions/functions";
 import { useAppDispatch, useAppSelector } from "../../redux/features/hook";
 import { setTool } from "../../redux/features/toolSlice";
 
@@ -17,7 +17,7 @@ interface Props {
   setRedoArr: (redoArr: string[]) => void;
 }
 const Toolbar = (props: Props) => {
-  const { undoArr, redoArr, setUndoArr, setRedoArr } = props;
+  const { undoArr, redoArr } = props;
   const dispatch = useAppDispatch();
   const {
     tool: { tool },
@@ -25,7 +25,7 @@ const Toolbar = (props: Props) => {
   } = useAppSelector((state) => state);
 
   function handleClick(item: string) {
-    functionsHandler({ funcName: item, socket, id, undoArr, redoArr });
+    functionsHandler({ funcName: item, socket, id, undoArr, redoArr, canvas });
   }
 
   return (

@@ -114,7 +114,7 @@ const SvgSelector = ({ tool }: Props) => {
           />
         </svg>
       );
-    case "diskette":
+    case "save":
       return (
         <svg
           width="25"

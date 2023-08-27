@@ -10,6 +10,7 @@ interface Msg {
 
 export interface functionsArgs {
   msg: Msg;
+  id: string | undefined;
   undoArr: string[] | any[];
   redoArr: string[] | any[];
   setUndoArr: (undoArr: string[]) => void;
@@ -22,6 +23,7 @@ export type ActionCallback = (args: {
   setUndoArr: (undoArr: string[]) => void;
   setRedoArr: (redoArr: string[]) => void;
   canvas: HTMLCanvasElement;
+  id: string | undefined;
 }) => void;
 
 export type ActionMap = {
@@ -34,6 +36,7 @@ export interface UndoandRedoArgs {
   setUndoArr: (undoArr: string[]) => void;
   setRedoArr: (redoArr: string[]) => void;
   canvas: HTMLCanvasElement | null | undefined;
+  id: string | undefined;
 }
 
 type UndoAndRedoHandlerArgs = {
@@ -41,12 +44,14 @@ type UndoAndRedoHandlerArgs = {
   id: string | null | undefined;
   undoArr: string[];
   redoArr: string[];
+  canvas?: HTMLCanvasElement | null | undefined;
 };
 
 export type UndoAndRedoHandler = (args: UndoAndRedoHandlerArgs) => void;
 
 type FunctionHandlerArgs = {
   funcName: string;
+  canvas: HTMLCanvasElement | null | undefined;
   socket: WebSocket | null | undefined;
   id: string | null | undefined;
   undoArr: string[];
@@ -60,6 +65,7 @@ export type FuncsCallback = (args: {
   id: string | null | undefined;
   undoArr: string[];
   redoArr: string[];
+  canvas?: HTMLCanvasElement | null | undefined;
 }) => void;
 
 export interface FuncsMap {

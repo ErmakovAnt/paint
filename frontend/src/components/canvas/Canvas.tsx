@@ -26,6 +26,14 @@ const Canvas = (props: CanvasProps) => {
   const params = useParams();
 
   useEffect(() => {
+    let ctx = canvasRef.current?.getContext("2d");
+    if (ctx && canvasRef.current) {
+      ctx.fillStyle = "#fff";
+      ctx?.fillRect(0, 0, canvasRef.current?.width, canvasRef.current?.height);
+    }
+  }, []);
+
+  useEffect(() => {
     if (userName) {
       const socket: WebSocket = new WebSocket("ws://localhost:5000/");
       dispatch(setSocket(socket));
@@ -33,18 +41,18 @@ const Canvas = (props: CanvasProps) => {
       dispatch(setCanvas(canvasRef.current));
       tools({ tool, canvas: canvasRef.current });
 
-      socketActions(
+      socketActions({
         socket,
-        params,
+        id: params.id,
         userName,
-        canvasRef,
+        canvas: canvasRef.current,
         drawHandler,
         functions,
         undoArr,
         redoArr,
         setUndoArr,
-        setRedoArr
-      );
+        setRedoArr,
+      });
     }
   }, [userName, tool]);
 

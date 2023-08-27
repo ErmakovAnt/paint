@@ -6,4 +6,4 @@ export const tools: string[] = [
   "circle",
   "eraser",
 ];
-export const functions: string[] = ["undo", "redo", "diskette"];
+export const functions: string[] = ["undo", "redo", "save"];

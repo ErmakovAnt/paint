@@ -8,7 +8,7 @@ function App() {
     <div className={style.App}>
       <MyModal />
       <SettingBar />
-      <Canvas height={577} width={998} />
+      <Canvas height={576} width={996} />
     </div>
   );
 }

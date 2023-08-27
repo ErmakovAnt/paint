@@ -15,6 +15,7 @@ export function tools(args: toolsArgs) {
   const { tool, canvas, fillColor, strokeColor, lineWidth, socket, id } = args;
 
   let ctx = canvas?.getContext("2d");
+
   const toolsMap: ToolsMap = {
     pencil,
     brush,
