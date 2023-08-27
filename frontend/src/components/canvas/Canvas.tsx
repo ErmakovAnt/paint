@@ -8,6 +8,7 @@ import style from "../../styles/Canvas.module.css";
 import Toolbar from "../toolbar/ToolBar";
 import { functions } from "../../functions/functions";
 import { socketActions } from "../../utils/socketAction";
+import axios from "axios";
 
 interface CanvasProps {
   width: number;
@@ -26,11 +27,36 @@ const Canvas = (props: CanvasProps) => {
   const params = useParams();
 
   useEffect(() => {
+    dispatch(setCanvas(canvasRef.current));
     let ctx = canvasRef.current?.getContext("2d");
     if (ctx && canvasRef.current) {
       ctx.fillStyle = "#fff";
       ctx?.fillRect(0, 0, canvasRef.current?.width, canvasRef.current?.height);
     }
+
+    axios.get(`http://localhost:5000/image?id=${params.id}`).then((res) => {
+      const img = new Image();
+      img.src = res.data;
+      console.log(res.data);
+      img.onload = () => {
+        if (canvasRef.current) {
+          ctx?.fillRect(
+            0,
+            0,
+            canvasRef.current?.width,
+            canvasRef.current?.height
+          );
+          ctx?.drawImage(
+            img,
+            0,
+            0,
+            canvasRef.current?.width,
+            canvasRef.current?.height
+          );
+          ctx?.stroke();
+        }
+      };
+    });
   }, []);
 
   useEffect(() => {
@@ -38,7 +64,6 @@ const Canvas = (props: CanvasProps) => {
       const socket: WebSocket = new WebSocket("ws://localhost:5000/");
       dispatch(setSocket(socket));
       dispatch(setId(params.id));
-      dispatch(setCanvas(canvasRef.current));
       tools({ tool, canvas: canvasRef.current });
 
       socketActions({
@@ -60,6 +85,11 @@ const Canvas = (props: CanvasProps) => {
     if (canvasRef.current) {
       setUndoArr([...undoArr, canvasRef?.current?.toDataURL()]);
     }
+    axios
+      .post(`http://localhost:5000/image?id=${params.id}`, {
+        img: canvasRef.current?.toDataURL(),
+      })
+      .then((res) => console.log(res));
   };
 
   return (
